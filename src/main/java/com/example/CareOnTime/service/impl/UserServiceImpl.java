@@ -1,0 +1,32 @@
+package com.example.CareOnTime.service.impl;
+
+import com.example.CareOnTime.model.dto.UserDto;
+import com.example.CareOnTime.model.entity.User;
+import com.example.CareOnTime.repository.UserRepository;
+import com.example.CareOnTime.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+public class UserServiceImpl implements UserService {
+    UserRepository userRepository;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
+
+    @Override
+    public User registerUser(UserDto userDto) {
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setLastActive(LocalDateTime.now());
+        return userRepository.save(user);
+    }
+}
