@@ -9,6 +9,7 @@ import javax.persistence.Column;
 @NoArgsConstructor
 @Getter
 @Setter
+
 public class UserDto {
 
     @Column
