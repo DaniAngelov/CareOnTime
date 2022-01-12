@@ -18,7 +18,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-
     @Override
     public User registerUser(UserDto userDto) {
         User user = new User();

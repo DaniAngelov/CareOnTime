@@ -1,5 +1,7 @@
-package com.example.CareOnTime.model.entity;
+package com.example.CareOnTime.model.dto;
 
+import com.example.CareOnTime.model.entity.Duration;
+import com.example.CareOnTime.model.entity.Frequency;
 import com.example.CareOnTime.model.enums.PillType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,32 +22,24 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import java.util.List;
 
-@Entity(name = "pills")
 @NoArgsConstructor
 @Getter
 @Setter
-public class Pill {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class PillDto {
 
     @Column
     @Enumerated(EnumType.STRING)
     private PillType pillType;
 
-    @OneToMany
-    @JoinColumn(name = "pill_id", referencedColumnName = "id")
     private List<Frequency> frequencies;
 
     @Column
     private String name;
 
-    @OneToOne(mappedBy = "pill", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
     private Duration duration;
 
     @Column(name = "user_id")
     private Integer userId;
 
 }
+
