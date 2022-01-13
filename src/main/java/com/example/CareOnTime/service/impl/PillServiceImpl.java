@@ -3,7 +3,6 @@ package com.example.CareOnTime.service.impl;
 import com.example.CareOnTime.model.dto.PillDto;
 import com.example.CareOnTime.model.entity.Pill;
 import com.example.CareOnTime.repository.PillRepository;
-import com.example.CareOnTime.repository.UserRepository;
 import com.example.CareOnTime.service.PillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

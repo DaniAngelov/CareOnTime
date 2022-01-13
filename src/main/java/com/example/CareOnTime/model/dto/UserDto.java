@@ -1,12 +1,12 @@
 package com.example.CareOnTime.model.dto;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
@@ -29,4 +29,8 @@ public class UserDto {
     @Column
     @NotNull
     private String name;
+
+    @Column
+    private LocalDateTime lastActive;
+
 }

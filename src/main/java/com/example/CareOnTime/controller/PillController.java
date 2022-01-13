@@ -39,6 +39,8 @@ public class PillController {
         return new ResponseEntity<>(pillDtos, HttpStatus.OK);
     }
 
+    //get pills for current day
+
     @GetMapping(path = "/pill-types")
     public ResponseEntity<List<PillType>> getPillTypes() {
         return new ResponseEntity<>(Arrays.asList(PillType.values()), HttpStatus.OK);

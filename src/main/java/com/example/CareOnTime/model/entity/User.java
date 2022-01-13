@@ -1,7 +1,6 @@
 package com.example.CareOnTime.model.entity;
 
-import com.sun.istack.NotNull;
-import lombok.Builder;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
