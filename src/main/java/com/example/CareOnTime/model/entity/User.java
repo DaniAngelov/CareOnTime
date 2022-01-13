@@ -1,5 +1,6 @@
 package com.example.CareOnTime.model.entity;
 
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,18 +27,23 @@ public class User {
     private Integer id;
 
     @Column
+    @NotNull
     private String username;
 
     @Column
+    @NotNull
     private String password;
 
     @Column
+    @NotNull
     private String email;
 
     @Column
+    @NotNull
     private String name;
 
     @Column
+    @NotNull
     private LocalDateTime lastActive;
 
     @OneToMany

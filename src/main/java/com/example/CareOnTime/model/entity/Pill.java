@@ -1,6 +1,7 @@
 package com.example.CareOnTime.model.entity;
 
 import com.example.CareOnTime.model.enums.PillType;
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class Pill {
     private Integer id;
 
     @Column
+    @NotNull
     @Enumerated(EnumType.STRING)
     private PillType pillType;
 
@@ -39,6 +41,7 @@ public class Pill {
     private List<Frequency> frequencies;
 
     @Column
+    @NotNull
     private String name;
 
     @OneToOne(mappedBy = "pill", cascade = CascadeType.ALL)
@@ -46,6 +49,7 @@ public class Pill {
     private Duration duration;
 
     @Column(name = "user_id")
+    @NotNull
     private Integer userId;
 
 }

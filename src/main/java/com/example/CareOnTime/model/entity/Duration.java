@@ -1,5 +1,6 @@
 package com.example.CareOnTime.model.entity;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,13 +22,15 @@ public class Duration {
     @Column(name = "pill_id")
     private Integer id;
 
-    @Column
+    @Column(name = "start_date")
+    @NotNull
     private LocalDate startDate;
 
-    @Column
+    @Column(name = "end_date")
     private LocalDate endDate;
 
     @OneToOne
     @JoinColumn(name = "pill_id")
+    @NotNull
     private Pill pill;
 }

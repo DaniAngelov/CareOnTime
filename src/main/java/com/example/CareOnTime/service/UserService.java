@@ -5,4 +5,5 @@ import com.example.CareOnTime.model.entity.User;
 
 public interface UserService {
     User registerUser(UserDto userDto);
+    // login
 }

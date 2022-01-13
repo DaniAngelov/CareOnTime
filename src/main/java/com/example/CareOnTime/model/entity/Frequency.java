@@ -1,6 +1,7 @@
 package com.example.CareOnTime.model.entity;
 
 import com.example.CareOnTime.model.enums.FrequencyType;
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,10 +23,12 @@ public class Frequency {
     @Column
     private Integer id;
 
-    @Column
+    @Column(name = "frequency_type")
+    @NotNull
     @Enumerated(EnumType.STRING)
     private FrequencyType frequencyType;
 
     @Column
-    private LocalTime localTime;
+    @NotNull
+    private LocalTime time;
 }
