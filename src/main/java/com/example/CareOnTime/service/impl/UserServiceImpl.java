@@ -1,10 +1,13 @@
 package com.example.CareOnTime.service.impl;
 
 import com.example.CareOnTime.model.dto.UserDto;
+import com.example.CareOnTime.model.entity.SendTask;
 import com.example.CareOnTime.model.entity.User;
 import com.example.CareOnTime.repository.UserRepository;
 import com.example.CareOnTime.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,12 +19,14 @@ import java.time.LocalDateTime;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+    private final TaskScheduler taskScheduler;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,TaskScheduler taskScheduler){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.taskScheduler = taskScheduler;
     }
 
     @Override
@@ -32,6 +37,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setLastActive(LocalDateTime.now());
+        taskScheduler.schedule(new SendTask(),new CronTrigger(user.getSchedule()));
         return userRepository.save(user);
     }
 

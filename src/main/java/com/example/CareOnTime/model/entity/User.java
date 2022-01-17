@@ -64,13 +64,16 @@ public class User implements UserDetails {
     @NotNull
     private boolean isEnabled;
 
+    @Column
+    private String schedule = "*/10 * * * * *"; // per 10 seconds
+
     @OneToMany
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     List<Pill> pills;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<GrantedAuthority>();
+        return new ArrayList<>();
     }
 
     @Override
