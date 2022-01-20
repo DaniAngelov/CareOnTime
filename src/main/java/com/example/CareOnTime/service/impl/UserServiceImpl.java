@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private void checkPassword(String password) {
-        String[] similarPasswords = getPasswordsBasedOnPrefix(password.substring(0, 10));
+        String[] similarPasswords = getPasswordsBasedOnPrefix(password.substring(0, 5));
         String upperCasePassword = password.toUpperCase();
         for (int i = 0; i < similarPasswords.length; i++) {
             if (upperCasePassword.contains(similarPasswords[i])) {
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setUsername(userDto.getUsername());
         // check username already in use and if so throw exception
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
-        checkPassword(encodedPassword);
+        //checkPassword(encodedPassword);
         user.setPassword(encodedPassword);
         user.setName(userDto.getName());
         // check email already in use and if so throw exception
