@@ -7,8 +7,10 @@ import com.example.CareOnTime.service.UserService;
 import com.example.CareOnTime.task.EmailPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -67,6 +69,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         // check email already in use and if so throw exception
         user.setEmail(userDto.getEmail());
         user.setLastActive(LocalDateTime.now());
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
         return userRepository.save(user);
     }
 
@@ -79,4 +85,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return user;
     }
+
+
 }

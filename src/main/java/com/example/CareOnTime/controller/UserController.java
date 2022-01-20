@@ -31,5 +31,4 @@ public class UserController {
         return new ResponseEntity<>(modelMapper.map(user,UserDto.class), HttpStatus.CREATED);
     }
 
-
 }
