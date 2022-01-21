@@ -46,6 +46,7 @@ public class User implements UserDetails {
     private String name;
 
     @Column(name = "last_active")
+    @NotNull
     private LocalDateTime lastActive;
 
     @Column
@@ -63,9 +64,6 @@ public class User implements UserDetails {
     @Column
     @NotNull
     private boolean isEnabled;
-
-    @Column
-    private String schedule = "*/10 * * * * *"; // per 10 seconds
 
     @OneToMany
     @JoinColumn(name = "user_id", referencedColumnName = "id")

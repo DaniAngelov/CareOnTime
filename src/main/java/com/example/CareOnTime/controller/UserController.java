@@ -1,6 +1,8 @@
 package com.example.CareOnTime.controller;
 
+import com.example.CareOnTime.exception.CustomRegisterException;
 import com.example.CareOnTime.model.dto.UserDto;
+import com.example.CareOnTime.model.dto.UserLoginDto;
 import com.example.CareOnTime.model.entity.User;
 import com.example.CareOnTime.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -26,9 +28,17 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> register(@Valid @RequestBody UserDto userDto) throws CustomRegisterException {
         User user = userService.registerUser(userDto);
         return new ResponseEntity<>(modelMapper.map(user,UserDto.class), HttpStatus.CREATED);
     }
 
+    @PostMapping
+    public ResponseEntity<UserDto> login(@Valid @RequestBody UserLoginDto userLoginDto) {
+        User user = userService.loginUser(userLoginDto);
+        if (user != null) {
+            return new ResponseEntity<>(modelMapper.map(user,UserDto.class), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
 }

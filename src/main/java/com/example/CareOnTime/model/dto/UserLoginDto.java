@@ -6,13 +6,11 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDto {
-
+public class UserLoginDto {
     @Column
     @NotNull
     private String username;
@@ -20,16 +18,5 @@ public class UserDto {
     @Column
     @NotNull
     private String password;
-
-    @Column
-    @NotNull
-    private String email;
-
-    @Column
-    @NotNull
-    private String name;
-
-    @Column
-    private LocalDateTime lastActive;
 
 }
