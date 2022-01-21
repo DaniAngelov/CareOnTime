@@ -32,4 +32,8 @@ public class UserDto {
     @Column
     private LocalDateTime lastActive;
 
+    @Column(name = "is_subscribed")
+    @NotNull
+    private boolean isSubscribed;
+
 }

@@ -37,11 +37,13 @@ public class EmailPublisher implements Runnable {
 
         List<User> users = userRepository.findAll();
         List<User> usersToReceiveEmail = users.stream()
-                .filter(user -> user.getLastActive().plusSeconds(30).isBefore(LocalDateTime.now()))
+                .filter(user -> user.getLastActive().plusSeconds(30).isBefore(LocalDateTime.now()) &&
+                        user.isSubscribed())
                 .collect(Collectors.toList());
         // send email to each of the returned users
         usersToReceiveEmail.forEach(user -> sendSimpleMessage(user.getEmail(), "Please come back",
-                "You haven't been active on our website for a while now. We nudge you to come back :)"));
+                "Hi, "  + user.getUsername() + "\nYou haven't been active on our website for a while now. " +
+                        "We nudge you to come back :)"));
         System.out.println("Send");
     }
 

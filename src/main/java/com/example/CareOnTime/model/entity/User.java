@@ -49,6 +49,10 @@ public class User implements UserDetails {
     @NotNull
     private LocalDateTime lastActive;
 
+    @Column(name = "is_subscribed")
+    @NotNull
+    private boolean isSubscribed;
+
     @Column
     @NotNull
     private boolean isAccountNonExpired;
