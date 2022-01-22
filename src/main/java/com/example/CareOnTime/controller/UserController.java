@@ -33,11 +33,11 @@ public class UserController {
         return new ResponseEntity<>(modelMapper.map(user,UserDto.class), HttpStatus.CREATED);
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<UserDto> login(@Valid @RequestBody UserLoginDto userLoginDto) {
         User user = userService.loginUser(userLoginDto);
         if (user != null) {
-            return new ResponseEntity<>(modelMapper.map(user,UserDto.class), HttpStatus.CREATED);
+            return new ResponseEntity<>(modelMapper.map(user,UserDto.class), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
