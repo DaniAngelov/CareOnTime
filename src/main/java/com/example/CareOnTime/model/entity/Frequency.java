@@ -8,8 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import java.time.LocalTime;
 
@@ -23,10 +21,9 @@ public class Frequency {
     @Column
     private Integer id;
 
-    @Column(name = "frequency_type")
+    @Column(name = "every_x_days")
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private FrequencyType frequencyType;
+    private Integer everyXDays;
 
     @Column
     @NotNull

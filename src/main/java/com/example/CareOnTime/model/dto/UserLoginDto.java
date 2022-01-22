@@ -12,6 +12,9 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class UserLoginDto {
     @Column
+    private Integer id;
+
+    @Column
     @NotNull
     private String username;
 

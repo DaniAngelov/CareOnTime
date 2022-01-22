@@ -20,6 +20,9 @@ import java.util.List;
 public class PillDto {
 
     @Column
+    private Integer id;
+
+    @Column
     @NotNull
     @Enumerated(EnumType.STRING)
     private PillType pillType;

@@ -26,8 +26,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(CustomRegisterException.class)
-    public ResponseEntity<Object> customRegisterException(HttpServletResponse response, CustomRegisterException ex) throws IOException {
+    @ExceptionHandler(CustomUserException.class)
+    public ResponseEntity<Object> customRegisterException(HttpServletResponse response, CustomUserException ex) throws IOException {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

@@ -1,6 +1,7 @@
 package com.example.CareOnTime.service.impl;
 
-import com.example.CareOnTime.exception.CustomRegisterException;
+import com.example.CareOnTime.exception.CustomUserException;
+import com.example.CareOnTime.model.dto.UserChangeDto;
 import com.example.CareOnTime.model.dto.UserDto;
 import com.example.CareOnTime.model.dto.UserLoginDto;
 import com.example.CareOnTime.model.entity.User;
@@ -45,22 +46,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return result.split(":[0-9]+\r\n");
     }
 
-    private void checkPassword(String password) throws CustomRegisterException {
+    private void checkPassword(String password) throws CustomUserException {
         String[] similarPasswords = getPasswordsBasedOnPrefix(password.substring(0, 5));
         String upperCasePassword = password.toUpperCase();
         for (int i = 0; i < similarPasswords.length; i++) {
             if (upperCasePassword.contains(similarPasswords[i])) {
                 System.out.println("AAAAAAAAAAAAA");
-                throw new CustomRegisterException("Password is easily compromised!");
+                throw new CustomUserException("Password is easily compromised!");
             }
         }
     }
 
     @Override
-    public User loginUser(UserLoginDto userLoginDto) {
+    public User loginUser(UserLoginDto userLoginDto) throws CustomUserException {
         User user = userRepository.findByUsername(userLoginDto.getUsername());
-        if (user == null || passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
-            return null;
+        if (user == null || !passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
+            throw new CustomUserException("Username or password doesn't match!");
         }
         // change last active every time they login
         user.setLastActive(LocalDateTime.now());
@@ -69,19 +70,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User registerUser(UserDto userDto) throws CustomRegisterException {
+    public User changeUser(UserChangeDto userChangeDto, Integer id) throws CustomUserException {
+        User user = userRepository.getById(id);
+        if (!passwordEncoder.matches(userChangeDto.getPassword(), user.getPassword())) {
+            throw new CustomUserException("Password doesn't match!");
+        }
+        if (userChangeDto.getNewPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userChangeDto.getPassword()));
+        }
+        if (userChangeDto.getNewUsername() != null) {
+            user.setUsername(userChangeDto.getNewUsername());
+        }
+        user.setLastActive(LocalDateTime.now());
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User registerUser(UserDto userDto) throws CustomUserException {
         User userByUsername = userRepository.findByUsername(userDto.getUsername());
         if (userByUsername != null) {
-            throw new CustomRegisterException("Username is already taken!");
+            throw new CustomUserException("Username is already taken!");
         }
 
         User userByEmail = userRepository.findByEmail(userDto.getEmail());
         if (userByEmail != null) {
-            throw new CustomRegisterException("Email is already taken!");
+            throw new CustomUserException("Email is already taken!");
         }
 
         if (!userDto.getEmail().matches("^\\S+@\\S+$")) {
-            throw new CustomRegisterException("Email is not valid!");
+            throw new CustomUserException("Email is not valid!");
         }
 
         User user = new User();
