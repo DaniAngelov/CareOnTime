@@ -2,6 +2,8 @@ package com.example.CareOnTime.model.entity;
 
 import com.example.CareOnTime.model.enums.PillType;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,7 +38,7 @@ public class Pill {
     @Enumerated(EnumType.STRING)
     private PillType pillType;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pill_id", referencedColumnName = "id")
     private List<Frequency> frequencies;
 
@@ -46,6 +48,7 @@ public class Pill {
 
     @OneToOne(mappedBy = "pill", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
+    @JsonBackReference
     private Duration duration;
 
     @Column(name = "user_id")

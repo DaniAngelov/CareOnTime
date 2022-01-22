@@ -49,8 +49,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private void checkPassword(String password) throws CustomUserException {
         String[] similarPasswords = getPasswordsBasedOnPrefix(password.substring(0, 5));
         String upperCasePassword = password.toUpperCase();
-        for (int i = 0; i < similarPasswords.length; i++) {
-            if (upperCasePassword.contains(similarPasswords[i])) {
+        for (String similarPassword : similarPasswords) {
+            if (upperCasePassword.contains(similarPassword)) {
                 System.out.println("AAAAAAAAAAAAA");
                 throw new CustomUserException("Password is easily compromised!");
             }
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new CustomUserException("Password doesn't match!");
         }
         if (userChangeDto.getNewPassword() != null) {
-            user.setPassword(passwordEncoder.encode(userChangeDto.getPassword()));
+            user.setPassword(passwordEncoder.encode(userChangeDto.getNewPassword()));
         }
         if (userChangeDto.getNewUsername() != null) {
             user.setUsername(userChangeDto.getNewUsername());

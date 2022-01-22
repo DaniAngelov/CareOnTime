@@ -1,6 +1,9 @@
 package com.example.CareOnTime.model.entity;
 
+import javax.persistence.MapsId;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,7 +33,8 @@ public class Duration {
     private LocalDate endDate;
 
     @OneToOne
-    @JoinColumn(name = "pill_id")
+    @MapsId
     @NotNull
+    @JsonManagedReference
     private Pill pill;
 }

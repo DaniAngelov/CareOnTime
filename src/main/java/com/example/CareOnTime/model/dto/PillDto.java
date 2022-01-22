@@ -39,8 +39,5 @@ public class PillDto {
     @NotNull
     private Integer userId;
 
-    @Column
-    @NotNull
-    private LocalDateTime lastActive;
 }
 

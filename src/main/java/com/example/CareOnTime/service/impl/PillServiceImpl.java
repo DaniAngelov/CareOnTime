@@ -32,6 +32,7 @@ public class PillServiceImpl implements PillService {
         Pill pill = new Pill();
         pill.setName(pillDto.getName());
         pill.setDuration(pillDto.getDuration());
+        pill.getDuration().setPill(pill);
         pill.setFrequencies(pillDto.getFrequencies());
         pill.setPillType(pillDto.getPillType());
         pill.setUserId(pillDto.getUserId());

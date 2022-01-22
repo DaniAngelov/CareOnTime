@@ -1,6 +1,9 @@
 package com.example.CareOnTime.model.entity;
 
 import com.example.CareOnTime.model.enums.FrequencyType;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,7 @@ public class Frequency {
 
     @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "every_x_days")
