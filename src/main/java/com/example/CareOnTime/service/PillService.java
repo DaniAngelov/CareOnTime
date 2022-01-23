@@ -11,4 +11,5 @@ public interface PillService {
     List<Pill> getAllPills(Integer userId);
     List<Pill> getAllPillsByDate(Integer userId, LocalDate localDate);
     void deletePillById(Integer id);
+    Pill changePill(PillDto pillDto, Integer id);
 }

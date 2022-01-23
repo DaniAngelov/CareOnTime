@@ -3,6 +3,7 @@ package com.example.CareOnTime.model.entity;
 import javax.persistence.MapsId;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,5 +37,6 @@ public class Duration {
     @MapsId
     @NotNull
     @JsonManagedReference
+    @JsonIgnore
     private Pill pill;
 }

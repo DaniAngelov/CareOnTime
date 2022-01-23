@@ -37,7 +37,7 @@ public class PillServiceImpl implements PillService {
         pill.setPillType(pillDto.getPillType());
         pill.setUserId(pillDto.getUserId());
 
-        User user = userRepository.getById(pillDto.getUserId());
+        User user = userRepository.findById(pillDto.getUserId()).get();
         user.setLastActive(LocalDateTime.now());
         userRepository.save(user);
 
@@ -58,7 +58,8 @@ public class PillServiceImpl implements PillService {
         List<Pill> allPills = pillRepository.findAllByUserId(userId);
         List<Pill> filteredPills = allPills.stream()
                 // filter pills that are active by date
-                .filter(pill ->  pill.getDuration().getStartDate().isBefore(localDate) &&
+                .filter(pill ->  (pill.getDuration().getStartDate().isBefore(localDate) ||
+                        pill.getDuration().getStartDate().isEqual(localDate)) &&
                         (pill.getDuration().getEndDate().isAfter(localDate) || pill.getDuration().getEndDate() == null))
                 .collect(Collectors.toList());
 
@@ -66,16 +67,37 @@ public class PillServiceImpl implements PillService {
             // filter pills that are active by frequency
             pill.setFrequencies(pill.getFrequencies().stream()
                     .filter(frequency -> {
-                Long daysFromStart = DAYS.between(pill.getDuration().getStartDate(), LocalDate.now());
+                Long daysFromStart = DAYS.between(pill.getDuration().getStartDate(), localDate);
                 return daysFromStart % frequency.getEveryXDays() == 0;
             }).collect(Collectors.toList()));
+
+
         });
 
-        return filteredPills;
+        return filteredPills.stream().filter(pill -> !pill.getFrequencies().isEmpty()).collect(Collectors.toList());
     }
 
     @Override
     public void deletePillById(Integer id) {
         pillRepository.deleteById(id);
+    }
+
+    @Override
+    public Pill changePill(PillDto pillDto, Integer id) {
+        Pill pill = pillRepository.findById(id).get();
+        pill.setName(pillDto.getName());
+        pill.setDuration(pillDto.getDuration());
+        pill.getDuration().setPill(pill);
+        pill.setFrequencies(pillDto.getFrequencies());
+        pill.setPillType(pillDto.getPillType());
+        pill.setUserId(pillDto.getUserId());
+
+        Pill changedPill = pillRepository.save(pill);
+
+        User user = userRepository.findById(pillDto.getUserId()).get();
+        user.setLastActive(LocalDateTime.now());
+        userRepository.save(user);
+
+        return changedPill;
     }
 }

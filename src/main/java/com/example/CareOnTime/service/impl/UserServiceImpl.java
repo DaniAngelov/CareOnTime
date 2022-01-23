@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
-    UserRepository userRepository;
+    private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private TaskScheduler taskScheduler;
     private EmailPublisher emailPublisher;

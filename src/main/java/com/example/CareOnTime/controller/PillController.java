@@ -42,7 +42,8 @@ public class PillController {
     }
 
     @GetMapping(path = "/{userId}")
-    public ResponseEntity<List<PillDto>> getPillsByDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    public ResponseEntity<List<PillDto>> getPillsByDate(@RequestParam(name = "date", required = false)
+                                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                               LocalDate localDate, @PathVariable Integer userId) {
         List<Pill> pills;
         if (localDate == null) {
@@ -53,6 +54,13 @@ public class PillController {
         List<PillDto> pillDtos = pills.stream().map(pill -> modelMapper.map(pill, PillDto.class))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(pillDtos, HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<PillDto> changePill(@Valid @RequestBody PillDto pillDto, @PathVariable Integer id) {
+        Pill pill = pillService.changePill(pillDto, id);
+
+        return new ResponseEntity<>(modelMapper.map(pill, PillDto.class), HttpStatus.OK);
     }
 
     @GetMapping(path = "/pill-types")
