@@ -37,7 +37,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .addFilterBefore(new NewFilter(), ChannelProcessingFilter.class)
+                .addFilterBefore(new AuthenticationFilter(), ChannelProcessingFilter.class)
                 .httpBasic();
     }
 
