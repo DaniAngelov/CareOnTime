@@ -8,6 +8,7 @@ import com.example.CareOnTime.model.entity.User;
 import com.example.CareOnTime.repository.UserRepository;
 import com.example.CareOnTime.service.UserService;
 import com.example.CareOnTime.task.EmailPublisher;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.scheduling.TaskScheduler;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private String[] getPasswordsBasedOnPrefix(String passwordPrefix) {
-        String url = "https://api.enzoic.com/passwords/" + passwordPrefix;
+        String url = "https://api.pwnedpasswords.com/range/" + passwordPrefix;
         String result = this.restTemplate.getForObject(url, String.class);
         return result.split(":[0-9]+\r\n");
     }
@@ -51,7 +52,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String upperCasePassword = password.toUpperCase();
         for (String similarPassword : similarPasswords) {
             if (upperCasePassword.contains(similarPassword)) {
-                System.out.println("AAAAAAAAAAAAA");
                 throw new CustomUserException("Password is easily compromised!");
             }
         }
@@ -102,11 +102,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new CustomUserException("Email is not valid!");
         }
 
+        String sha1HexedPassword = DigestUtils.sha1Hex(userDto.getPassword());
+        checkPassword(sha1HexedPassword);
+
         User user = new User();
         user.setUsername(userDto.getUsername());
-        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
-        //checkPassword(encodedPassword);
-        user.setPassword(encodedPassword);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setLastActive(LocalDateTime.now());
