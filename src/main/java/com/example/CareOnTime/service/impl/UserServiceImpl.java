@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String upperCasePassword = password.toUpperCase();
         for (String similarPassword : similarPasswords) {
             if (upperCasePassword.contains(similarPassword)) {
-                throw new CustomUserException("Password is easily compromised!");
+                throw new CustomUserException("PASSWORD_TOO_WEAK");
             }
         }
     }
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User loginUser(UserLoginDto userLoginDto) throws CustomUserException {
         User user = userRepository.findByUsername(userLoginDto.getUsername());
         if (user == null || !passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
-            throw new CustomUserException("Username or password doesn't match!");
+            throw new CustomUserException("INVALID_CREDENTIALS");
         }
         // change last active every time they login
         user.setLastActive(LocalDateTime.now());
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User changeUser(UserChangeDto userChangeDto, Integer id) throws CustomUserException {
         User user = userRepository.getById(id);
         if (!passwordEncoder.matches(userChangeDto.getPassword(), user.getPassword())) {
-            throw new CustomUserException("Password doesn't match!");
+            throw new CustomUserException("INVALID_CREDENTIALS");
         }
         if (userChangeDto.getNewPassword() != null) {
             user.setPassword(passwordEncoder.encode(userChangeDto.getNewPassword()));
@@ -90,16 +90,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User registerUser(UserDto userDto) throws CustomUserException {
         User userByUsername = userRepository.findByUsername(userDto.getUsername());
         if (userByUsername != null) {
-            throw new CustomUserException("Username is already taken!");
+            throw new CustomUserException("USERNAME_TAKEN");
         }
 
         User userByEmail = userRepository.findByEmail(userDto.getEmail());
         if (userByEmail != null) {
-            throw new CustomUserException("Email is already taken!");
+            throw new CustomUserException("EMAIL_TAKEN");
         }
 
         if (!userDto.getEmail().matches("^\\S+@\\S+$")) {
-            throw new CustomUserException("Email is not valid!");
+            throw new CustomUserException("EMAIL_INVALID");
         }
 
         String sha1HexedPassword = DigestUtils.sha1Hex(userDto.getPassword());
