@@ -31,5 +31,9 @@ public class Frequency {
 
     @Column
     @NotNull
+    private Integer amount;
+
+    @Column
+    @NotNull
     private LocalTime time;
 }
