@@ -60,7 +60,7 @@ public class PillServiceImpl implements PillService {
                 // filter pills that are active by date
                 .filter(pill ->  (pill.getDuration().getStartDate().isBefore(localDate) ||
                         pill.getDuration().getStartDate().isEqual(localDate)) &&
-                        (pill.getDuration().getEndDate().isAfter(localDate) || pill.getDuration().getEndDate() == null))
+                        (pill.getDuration().getEndDate() == null || pill.getDuration().getEndDate().isAfter(localDate)))
                 .collect(Collectors.toList());
 
         filteredPills.forEach(pill -> {
